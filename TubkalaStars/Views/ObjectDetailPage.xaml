@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TubkalaStars.ViewModels"
+             x:Class="TubkalaStars.Views.ObjectDetailPage"
+             x:DataType="vm:ObjectDetailViewModel"
+             Title="{Binding Object.CommonName}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16">
+
+            <!-- Cabecera -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="{Binding TypeDisplay}" Style="{StaticResource DimLabel}"/>
+                    <Label Text="{Binding Object.CommonName}" Style="{StaticResource TitleLabel}" FontSize="26"/>
+                    <Label Text="{Binding CatalogId}" Style="{StaticResource DimLabel}"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Coordenadas -->
+            <Frame Style="{StaticResource CardFrame}">
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" RowSpacing="8">
+                    <Label Grid.Row="0" Grid.Column="0" Text="Coordenadas" Style="{StaticResource DimLabel}"/>
+                    <Label Grid.Row="1" Grid.Column="0" Text="{Binding Coordinates}" Style="{StaticResource BodyLabel}"/>
+                    <Label Grid.Row="0" Grid.Column="1" Text="Magnitud" Style="{StaticResource DimLabel}"/>
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Object.Magnitude, StringFormat='{0:F1}'}"
+                           Style="{StaticResource BodyLabel}"/>
+                </Grid>
+            </Frame>
+
+            <!-- Descripción -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="📡 Descripción" Style="{StaticResource DimLabel}"/>
+                    <Label Text="{Binding Object.Description}" Style="{StaticResource BodyLabel}"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Mitología / Nota educativa -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="🏛️ Mitología e Historia" Style="{StaticResource DimLabel}"/>
+                    <Label Text="{Binding Object.MythologyNote}" Style="{StaticResource BodyLabel}"/>
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

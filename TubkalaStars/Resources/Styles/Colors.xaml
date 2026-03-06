@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- ── Paleta TubkalaStars ──────────────────────────────────────────── -->
+    <!-- Fondo cielo nocturno -->
+    <Color x:Key="SkyBlack">#050A14</Color>
+    <Color x:Key="SkyDarkBlue">#0D1B2A</Color>
+    <Color x:Key="SkyMidBlue">#1B3A5C</Color>
+
+    <!-- Accentos y UI -->
+    <Color x:Key="StarWhite">#F0F4FF</Color>
+    <Color x:Key="StarYellow">#FFE082</Color>
+    <Color x:Key="NightRed">#CC0000</Color>     <!-- Modo nocturno -->
+    <Color x:Key="TubkalaBlue">#1E88E5</Color>  <!-- Color corporativo Tubkala -->
+    <Color x:Key="TubkalaTeal">#00ACC1</Color>
+
+    <!-- Textos -->
+    <Color x:Key="TextPrimary">#E8EAF6</Color>
+    <Color x:Key="TextSecondary">#90A4AE</Color>
+    <Color x:Key="TextDim">#546E7A</Color>
+
+    <!-- DSO por tipo -->
+    <Color x:Key="ColorGalaxy">#CE93D8</Color>
+    <Color x:Key="ColorCluster">#FFF176</Color>
+    <Color x:Key="ColorNebula">#80DEEA</Color>
+    <Color x:Key="ColorPlanet">#A5D6A7</Color>
+
+</ResourceDictionary>

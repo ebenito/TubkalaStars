@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TubkalaStars.ViewModels"
+             xmlns:models="clr-namespace:TubkalaStars.Core.Models;assembly=TubkalaStars.Core"
+             x:Class="TubkalaStars.Views.OverlayManagerPage"
+             x:DataType="vm:OverlayManagerViewModel"
+             Title="📐 Overlays educativos">
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="16" RowSpacing="12">
+
+        <!-- Explicación -->
+        <Label Grid.Row="0"
+               Text="Los overlays se anclan al cielo y se mueven con el mapa. Toca uno para editarlo."
+               Style="{StaticResource DimLabel}"/>
+
+        <!-- Lista de overlays -->
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Overlays}" EmptyView="No hay overlays aún">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:StarMapOverlay">
+                    <Frame Style="{StaticResource CardFrame}" Margin="0,4">
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                            <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                <Label Text="{Binding Name}" Style="{StaticResource BodyLabel}" FontAttributes="Bold"/>
+                                <Label Text="{Binding EducationalNote}"
+                                       Style="{StaticResource DimLabel}"
+                                       MaxLines="2" LineBreakMode="TailTruncation"/>
+                                <Label Style="{StaticResource DimLabel}">
+                                    <Label.Text>
+                                        <MultiBinding StringFormat="AR: {0:F1}h  Dec: {1:+0.0;-0.0}°">
+                                            <Binding Path="AnchorRA"/>
+                                            <Binding Path="AnchorDec"/>
+                                        </MultiBinding>
+                                    </Label.Text>
+                                </Label>
+                            </VerticalStackLayout>
+
+                            <!-- Toggle visibilidad -->
+                            <Button Grid.Column="1"
+                                    Text="{Binding IsVisible, Converter={StaticResource BoolToEyeConverter}}"
+                                    FontSize="22" BackgroundColor="Transparent"
+                                    CommandParameter="{Binding Id}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:OverlayManagerViewModel}}, Path=ToggleVisibilityCommand}"/>
+
+                            <!-- Eliminar -->
+                            <Button Grid.Column="2" Text="🗑️" FontSize="22"
+                                    BackgroundColor="Transparent"
+                                    CommandParameter="{Binding Id}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:OverlayManagerViewModel}}, Path=RemoveOverlayCommand}"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Botón añadir -->
+        <Button Grid.Row="2"
+                Text="＋ Añadir imagen como overlay"
+                Command="{Binding AddOverlayCommand}"
+                Style="{StaticResource AstroButton}"/>
+
+    </Grid>
+</ContentPage>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
+             x:Class="TubkalaStars.Views.MainPage"
+             Title="TubkalaStars 🌟"
+             Shell.NavBarIsVisible="False">
+
+    <Grid>
+        <!-- ── Mapa estelar (canvas SkiaSharp ocupa toda la pantalla) ── -->
+        <skia:SKCanvasView x:Name="StarCanvas"
+                           PaintSurface="OnPaintSurface"
+                           EnableTouchEvents="True"
+                           Touch="OnCanvasTouch"
+                           BackgroundColor="{StaticResource SkyBlack}" />
+
+        <!-- ── Loading overlay ── -->
+        <Grid x:Name="LoadingGrid"
+              BackgroundColor="{StaticResource SkyBlack}"
+              IsVisible="{Binding IsLoading}">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
+                <ActivityIndicator IsRunning="True" Color="{StaticResource TubkalaBlue}" WidthRequest="60" HeightRequest="60"/>
+                <Label Text="{Binding StatusText}" Style="{StaticResource BodyLabel}"
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- ── Barra superior (info y controles) ── -->
+        <Grid VerticalOptions="Start" Padding="16,48,16,8"
+              IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Info -->
+            <VerticalStackLayout Grid.Column="0">
+                <Label Text="TubkalaStars" FontSize="18" FontAttributes="Bold"
+                       TextColor="{StaticResource StarWhite}"/>
+                <Label Text="{Binding StatusText}" Style="{StaticResource DimLabel}"/>
+            </VerticalStackLayout>
+
+            <!-- Botones superiores -->
+            <HorizontalStackLayout Grid.Column="1" Spacing="8">
+                <Button Text="🌙" Command="{Binding ToggleNightModeCommand}"
+                        BackgroundColor="Transparent" TextColor="{StaticResource StarWhite}"
+                        FontSize="22" Padding="4"/>
+                <Button Text="🔭" Command="{Binding ToggleOrientationTrackingCommand}"
+                        BackgroundColor="Transparent" TextColor="{StaticResource StarWhite}"
+                        FontSize="22" Padding="4"/>
+            </HorizontalStackLayout>
+        </Grid>
+
+        <!-- ── Controles de zoom (derecha) ── -->
+        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="End"
+                             Margin="0,0,12,0" Spacing="8"
+                             IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}">
+            <Button Text="+" Clicked="OnZoomIn"
+                    BackgroundColor="{StaticResource SkyDarkBlue}"
+                    TextColor="{StaticResource StarWhite}"
+                    CornerRadius="24" WidthRequest="48" HeightRequest="48"
+                    FontSize="20" FontAttributes="Bold" Padding="0"/>
+            <Button Text="−" Clicked="OnZoomOut"
+                    BackgroundColor="{StaticResource SkyDarkBlue}"
+                    TextColor="{StaticResource StarWhite}"
+                    CornerRadius="24" WidthRequest="48" HeightRequest="48"
+                    FontSize="20" FontAttributes="Bold" Padding="0"/>
+        </VerticalStackLayout>
+
+        <!-- ── Botón Overlays (esquina inferior derecha) ── -->
+        <Button Text="📐 Overlays"
+                Clicked="OnOverlaysClicked"
+                Style="{StaticResource AstroButton}"
+                VerticalOptions="End" HorizontalOptions="End"
+                Margin="0,0,16,32"
+                IsVisible="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}"/>
+
+        <!-- ── Panel detalle del objeto seleccionado (bottom sheet simple) ── -->
+        <Frame x:Name="ObjectPanel"
+               IsVisible="{Binding SelectedObject, Converter={StaticResource IsNotNullConverter}}"
+               Style="{StaticResource CardFrame}"
+               VerticalOptions="End" Margin="16,0,16,100">
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Grid.Column="0" Spacing="4">
+                    <Label Text="{Binding SelectedObject.CommonName}"
+                           Style="{StaticResource TitleLabel}"/>
+                    <Label Text="{Binding SelectedObject.Type}"
+                           Style="{StaticResource DimLabel}"/>
+                    <Label Text="{Binding SelectedObject.Description}"
+                           Style="{StaticResource BodyLabel}"
+                           MaxLines="3" LineBreakMode="TailTruncation"/>
+                </VerticalStackLayout>
+                <Button Grid.Column="1" Text="ℹ️" Clicked="OnObjectDetailClicked"
+                        BackgroundColor="Transparent" FontSize="28" Padding="8"/>
+            </Grid>
+        </Frame>
+
+    </Grid>
+</ContentPage>
