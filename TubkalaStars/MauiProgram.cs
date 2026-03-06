@@ -16,32 +16,40 @@ public static class MauiProgram
 
         builder
             .UseMauiApp<App>()
-            .UseSkiaSharp()  // ← SkiaSharp MAUI handler
+            .UseSkiaSharp()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        // ── Servicios Core ────────────────────────────────────────────────────
+        // ── Servicios Core ─────────────────────────────────────────────────
         builder.Services.AddSingleton<StarCatalog>();
         builder.Services.AddSingleton<OverlayManager>();
 
-        // ── Servicios MAUI ────────────────────────────────────────────────────
+        // ── Servicios MAUI ─────────────────────────────────────────────────
         builder.Services.AddSingleton<ILocationService, LocationService>();
-        builder.Services.AddSingleton<OrientationService>();
-        builder.Services.AddSingleton<IGyroscopeService>(sp => sp.GetRequiredService<OrientationService>());
-        builder.Services.AddSingleton<IOrientationService>(sp => sp.GetRequiredService<OrientationService>());
 
-        // ── ViewModels ────────────────────────────────────────────────────────
+        // OrientationService implementa ambas interfaces → registrar una vez
+        builder.Services.AddSingleton<OrientationService>();
+        builder.Services.AddSingleton<IGyroscopeService>(sp =>
+            sp.GetRequiredService<OrientationService>());
+        builder.Services.AddSingleton<IOrientationService>(sp =>
+            sp.GetRequiredService<OrientationService>());
+
+        // ── ViewModels ─────────────────────────────────────────────────────
         builder.Services.AddSingleton<StarMapViewModel>();
         builder.Services.AddTransient<ObjectDetailViewModel>();
         builder.Services.AddTransient<OverlayManagerViewModel>();
 
-        // ── Views ─────────────────────────────────────────────────────────────
+        // ── Views ──────────────────────────────────────────────────────────
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddTransient<ObjectDetailPage>();
         builder.Services.AddTransient<OverlayManagerPage>();
+
+#if DEBUG
+        builder.Logging.AddDebug();
+#endif
 
         return builder.Build();
     }
